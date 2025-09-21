@@ -1,22 +1,26 @@
 # OpenWeatherAPI Data Pipeline | Data Engineering Project
 
-Tập trung vào việc học cách kết nối một số các công nghệ DE phổ biến để làm việc với nhau trong Docker, không transform dữ liệu quá phức tạp hay đi sâu vào tối ưu, setup phức tạp như production.
+Tập trung vào việc học cách kết nối một số công nghệ DE phổ biến để làm việc với nhau trong Docker.  
+Project **không** tập trung vào transform phức tạp hay tối ưu nâng cao như môi trường production.
 
 ---
 
 ## 📑 Mục lục
-- [🎯 Giới thiệu](#-giới-thiệu)
-- [🧩 Kiến trúc hệ thống](#-kiến-trúc-hệ-thống)
-- [📈 Luồng dữ liệu](#-luồng-dữ-liệu)
-- [⚙️ Hướng dẫn cài đặt & chạy](#️-hướng-dẫn-cài-đặt--chạy)
-- [🔗 Giao diện quản trị](#-url-truy-cập)
+- [🎯 Giới thiệu](#-giới-thiệu)  
+- [🧩 Kiến trúc hệ thống](#-kiến-trúc-hệ-thống)  
+- [📈 Luồng dữ liệu](#-luồng-dữ-liệu)  
+- [⚙️ Hướng dẫn cài đặt & chạy](#️-hướng-dẫn-cài-đặt--chạy)  
+- [🔗 Giao diện quản trị](#-giao-diện-quản-trị)  
 
 ---
 
 ## 🎯 Giới thiệu
 
 Project này đóng vai trò như một project toàn diện để xây dựng một pipeline dữ liệu end-to-end.  
-Bao gồm toàn bộ các bước từ **thu thập dữ liệu thời tiết thực tế được fetching từ OpenWeather API bởi Kafka**, đến **xử lý dữ liệu với Spark**, và cuối cùng là **lưu trữ kết quả vào PostgreSQL**. Tất cả luồng dữ liệu đó đều được **trigger theo lịch trình tự động bởi Airflow** → đây là một bài toán **batch processing** điển hình, nơi dữ liệu được xử lý theo từng lô định kỳ thay vì realtime.
+
+Bao gồm toàn bộ các bước từ **thu thập dữ liệu thời tiết thực tế được fetching từ OpenWeather API bởi Kafka**, đến **xử lý dữ liệu với Spark**, và cuối cùng là **lưu trữ kết quả vào PostgreSQL**.  
+
+Tất cả luồng dữ liệu được **trigger theo lịch trình tự động bởi Airflow** → đây là một bài toán **batch processing** điển hình, nơi dữ liệu được xử lý theo từng lô định kỳ thay vì realtime.
 
 Pipeline sử dụng một bộ công nghệ hiện đại bao gồm **Apache Airflow, Python, Apache Kafka, Apache Spark và PostgreSQL**.  
 Toàn bộ hệ thống được **container hóa bằng Docker** để giúp việc triển khai trở nên dễ dàng, đồng nhất và có thể mở rộng.
@@ -24,26 +28,26 @@ Toàn bộ hệ thống được **container hóa bằng Docker** để giúp vi
 ---
 
 ## 🧩 Kiến trúc hệ thống
-![System Architecture](Kiến trúc hệ thống.png)
-Data source: Sử dụng API từ OpenWeatherAPI để lấy dữ liệu về thời tiết ở thời điểm hiện tại, dữ liệu lấy từ 3 thành phố: Hải Phòng, Hà Nội và Thành phố Hồ Chí Minh
-Apache Airflow: Đảm nhiệm quá trình điều phối toàn bộ pipeline (bao gồm trigger Kafka fetch API, submit Spark job và đẩy dữ liệu vào Postgres)
-Apache Kafka: message broker để truyền dữ liệu, sử dụng KRaft mode - lưu trữ và phân phối message, tự quản lí metadata của chính nó, loại bỏ sự phụ thuộc vào Zookeeper
-Apache Spark: Spark Cluster chịu trách nhiệm xử lý dữ liệu, trong đó Master node điều phối công việc còn Worker node thực hiện xử lý và ghi kết quả vào PostgreSQL
-PostgreSQL: Quản lí metdata của Airflow và nơi lưu trữ dữ liệu đã được xử lí từ Spark
 
+![System Architecture](Kiến trúc hệ thống.png)
+
+- **Data source**: OpenWeatherAPI, lấy dữ liệu thời tiết từ 3 thành phố: Hải Phòng, Hà Nội, TP.HCM.  
+- **Apache Airflow**: Orchestrator, điều phối pipeline (trigger Kafka fetch API, submit Spark job, ghi vào Postgres).  
+- **Apache Kafka**: Message broker truyền dữ liệu. Sử dụng **KRaft mode** để tự quản lý metadata, loại bỏ phụ thuộc vào Zookeeper.  
+- **Apache Spark**: Spark Cluster xử lý dữ liệu → Master node điều phối công việc, Worker node xử lý và ghi vào PostgreSQL.  
+- **PostgreSQL**: Vừa quản lý metadata của Airflow, vừa lưu dữ liệu đã xử lý từ Spark.  
 
 ---
 
-
 ## 📈 Luồng dữ liệu
+
 1. **Airflow** trigger DAG định kỳ → gọi Python script.  
 2. Script gọi **OpenWeather API** → lấy dữ liệu 3 thành phố → gửi vào **Kafka topic `weather-data`**.  
-3. **Spark job** (submit sử dụng `SparkSubmitOperator`) đọc từ Kafka → xử lý dữ liệu:  
+3. **Spark job** (submit qua `SparkSubmitOperator`) đọc từ Kafka → xử lý dữ liệu:  
    - Chuẩn hóa schema  
    - Phân loại mức nhiệt độ (lạnh / mát / nóng)  
-4. Spark ghi dữ liệu vào bảng PostgreSQL `weather_processed`.  
-5. Có thể xem dữ liệu qua **pgAdmin UI** hoặc chạy **SQL query**.  
-
+4. Spark ghi dữ liệu vào PostgreSQL bảng `weather_processed`.  
+5. Có thể xem dữ liệu qua **pgAdmin UI** hoặc query trực tiếp.  
 
 ---
 
