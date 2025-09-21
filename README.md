@@ -90,28 +90,11 @@ Toàn bộ hệ thống được **container hóa bằng Docker** để giúp vi
 
 ## 🔗 Giao diện quản trị
 
-- Airflow: localhost:8082
+| Service          | URL                          | User / Login         | Password   | Ghi chú                                |
+|------------------|------------------------------|----------------------|------------|----------------------------------------|
+| **Airflow**      | [localhost:8082](http://localhost:8082) | `airflow`           | `airflow` | Điều phối DAGs                        |
+| **pgAdmin**      | [localhost:5050](http://localhost:5050) | `admin@admin.com`   | `admin`   | UI cho PostgreSQL                      |
+| PostgreSQL       | `postgres` (hostname)       | `postgres`           | `postgres` | Thông tin khi add server trong pgAdmin |
+| **Kafka UI**     | [localhost:8080](http://localhost:8080) | -                    | -          | Quản lý brokers, topics, consumers     |
+| **Spark Master** | [localhost:8081](http://localhost:8081) | -                    | -          | Theo dõi trạng thái cluster            |
 
-login: airflow
-
-pass: airflow
-
-- pgAdmin (UI cho postgres): 
-
-login: admin@admin.com
-
-pass: admin
-
-----------------------
-
-Register servers:
-
-hostname: postgres
-
-username: postgres
-
-password: postgres
-
-- Kafka-UI (UI quản lí và theo dõi các brokers, topics, consumers): localhost:8080
-
-- Spark Master (UI quản lí và theo dõi trạng thái của workers): localhost:8081
