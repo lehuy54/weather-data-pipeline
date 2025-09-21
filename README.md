@@ -29,7 +29,7 @@ Toàn bộ hệ thống được **container hóa bằng Docker** để giúp vi
 
 ## 🧩 Kiến trúc hệ thống
 
-![System Architecture](Kiến trúc hệ thống.png)
+![Kiến trúc hệ thống](https://github.com/lehuy54/weather-data-pipeline/blob/main/Ki%E1%BA%BFn%20tr%C3%BAc%20h%E1%BB%87%20th%E1%BB%91ng.png)
 
 - **Data source**: OpenWeatherAPI, lấy dữ liệu thời tiết từ 3 thành phố: Hải Phòng, Hà Nội, TP.HCM.  
 - **Apache Airflow**: Orchestrator, điều phối pipeline (trigger Kafka fetch API, submit Spark job, ghi vào Postgres).  
