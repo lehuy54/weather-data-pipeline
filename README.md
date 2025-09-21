@@ -90,11 +90,16 @@ Toàn bộ hệ thống được **container hóa bằng Docker** để giúp vi
 
 ## 🔗 Giao diện quản trị
 
-| Service          | URL                          | User / Login         | Password   | Ghi chú                                |
-|------------------|------------------------------|----------------------|------------|----------------------------------------|
-| **Airflow**      | [localhost:8082](http://localhost:8082) | `airflow`           | `airflow` | Điều phối DAGs                        |
-| **pgAdmin**      | [localhost:5050](http://localhost:5050) | `admin@admin.com`   | `admin`   | UI cho PostgreSQL                      |
-| PostgreSQL       | `postgres` (hostname)       | `postgres`           | `postgres` | Thông tin khi add server trong pgAdmin |
-| **Kafka UI**     | [localhost:8080](http://localhost:8080) | -                    | -          | Quản lý brokers, topics, consumers     |
-| **Spark Master** | [localhost:8081](http://localhost:8081) | -                    | -          | Theo dõi trạng thái cluster            |
+| Service          | URL                          | User / Login       | Password   | Ghi chú                            |
+|------------------|------------------------------|--------------------|------------|------------------------------------|
+| **Airflow**      | [localhost:8082](http://localhost:8082) | `airflow`         | `airflow` | Orchestrator, trigger DAGs         |
+| **pgAdmin**      | [localhost:5050](http://localhost:5050) | `admin@admin.com` | `admin`   | UI cho PostgreSQL                  |
+| **Kafka UI**     | [localhost:8080](http://localhost:8080) | -                  | -          | Quản lý brokers, topics, consumers |
+| **Spark Master** | [localhost:8081](http://localhost:8081) | -                  | -          | Theo dõi trạng thái cluster        |
+
+🔹 **Thông tin đăng nhập PostgreSQL để thêm server trong pgAdmin**:  
+- hostname: `postgres`  
+- username: `postgres`  
+- password: `postgres`  
+
 
