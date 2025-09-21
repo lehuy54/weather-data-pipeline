@@ -55,7 +55,7 @@ Toàn bộ hệ thống được **container hóa bằng Docker** để giúp vi
 
 1. Clone repository:
     ```bash
-    git clone 
+    git clone https://github.com/lehuy54/weather-data-pipeline.git
     ```
 2. Vào https://openweathermap.org/api lấy API KEY, sau đó tạo file .env và gán:
     ```bash
@@ -91,16 +91,25 @@ Toàn bộ hệ thống được **container hóa bằng Docker** để giúp vi
 ## 🔗 Giao diện quản trị
 
 - Airflow: localhost:8082
+
 login: airflow
+
 pass: airflow
 
 - pgAdmin (UI cho postgres): 
+
 login: admin@admin.com
+
 pass: admin
+
 ----------------------
+
 Register servers:
+
 hostname: postgres
+
 username: postgres
+
 password: postgres
 
 - Kafka-UI (UI quản lí và theo dõi các brokers, topics, consumers): localhost:8080
