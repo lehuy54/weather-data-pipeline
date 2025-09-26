@@ -16,12 +16,12 @@ Project **không** tập trung vào transform phức tạp hay tối ưu nâng c
 
 ## 🎯 Giới thiệu
 
-Bao gồm toàn bộ các bước từ **thu thập dữ liệu thời tiết thực tế được fetching từ OpenWeather API bởi Kafka**, đến **xử lý dữ liệu với Spark**, và cuối cùng là **lưu trữ kết quả vào PostgreSQL**.  
+Bao gồm toàn bộ các bước từ **thu thập dữ liệu thời tiết thực tế được fetching từ OpenWeather API bởi Kafka**, đến **xử lý dữ liệu với Spark (batch)**, và cuối cùng là **lưu trữ kết quả vào PostgreSQL**.  
 
-Tất cả luồng dữ liệu được **trigger theo lịch trình tự động bởi Airflow** → đây là một bài toán **batch processing** điển hình, nơi dữ liệu được xử lý theo từng lô định kỳ thay vì realtime.
+Tất cả luồng dữ liệu được **trigger theo lịch trình tự động bởi Airflow**
 
-Pipeline sử dụng một bộ công nghệ hiện đại bao gồm **Apache Airflow, Python, Apache Kafka, Apache Spark và PostgreSQL**.  
-Toàn bộ hệ thống được **container hóa bằng Docker** để giúp việc triển khai trở nên dễ dàng, đồng nhất và có thể mở rộng.
+Pipeline sử dụng: **Apache Airflow, Python, Apache Kafka, Apache Spark và PostgreSQL**.  
+Toàn bộ hệ thống được **container hóa bằng Docker**
 
 ---
 
